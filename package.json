@@ -1,0 +1,28 @@
+{
+  "name": "podio-js",
+  "version": "0.0.1",
+  "description": "Podio helper sdk",
+  "main": "index.js",
+  "scripts": {
+    "build-ts": "tsc && cp package.json dist/",
+    "watch-ts": "./node_modules/.bin/tsc -w -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "podio",
+    "flowtasks",
+    "podio-js"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "reflect-metadata": "^0.1.12"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "devDependencies": {
+    "@types/lodash": "^4.14.117"
+  }
+}
