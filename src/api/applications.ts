@@ -89,7 +89,7 @@ export interface AppConfigV2 extends AppConfig {
 
 export const Activate = CreateEndpoint<RemoteApp, any>(HttpMethod.POST, "/app/{{app_id}}/activate");
 export const DeActivate = CreateEndpoint<RemoteApp, any>(HttpMethod.POST, "/app/{{app_id}}/deactivate");
-export const Get = CreateEndpoint<GetAppRequest, any>(HttpMethod.GET, "/app/{{app_id}}");
+export const Get = CreateEndpoint<RemoteApp, any>(HttpMethod.GET, "/app/{{app_id}}");
 export const GetAll = CreateEndpoint<GetAllAppRequest, any>(HttpMethod.GET, "/app");
 export const GetByLabels = CreateEndpoint<GetByOrgSpaceAndAppRequest, any>(HttpMethod.GET, "/app/org/{{org_name}}/space/{{space_name}}/{{app_name}}");
 export const GetDependencies = CreateEndpoint<RemoteApp, any>(HttpMethod.GET, "/app/{{app_id}}/dependencies");

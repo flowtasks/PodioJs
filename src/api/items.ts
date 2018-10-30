@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { CreateEndpoint, HttpMethod, Transformer, Postable } from "../";
-import { RemoteApp, ItemId, ViewId, RemoteItem, RemoteView, RemoteSpace, RemoteField, AppId, Revision, FieldId } from ".";
+import { RemoteApp, ItemId, ViewId, RemoteItem, RemoteView, RemoteSpace, RemoteField, AppId, Revision, FieldId, Fields } from ".";
 
 
 export interface CreateItemRequest extends Postable<any> {
@@ -110,9 +110,16 @@ export interface ItemParticipationRequest {
   status: "invited" | "accepted" | "declined" | "tentative";
 }
 
+export interface Item {
+  item_id: ItemId;
+  app: any;
+  fields: any;
+  [key: string]: any;
+}
+
 export type UpdateRequest = RemoteItem & Postable<any>;
 
-export type UpdateFieldValueRequest = ItemFieldV2Request & Postable<any>;
+export type UpdateFieldValueRequest = ItemFieldV2Request & Postable<Fields.FieldValueType>;
 
 export type UpdateValuesRequest = RemoteItem & Postable<any>;
 
@@ -202,7 +209,7 @@ export const GetReferencesByField = CreateEndpoint<ReferencedItemFieldRequest, a
   HttpMethod.GET, "/item/{{item_id}}/reference/field/{{field_id}}"
 );
 
-export const Add = CreateEndpoint<CreateItemRequest, any>(
+export const Add = CreateEndpoint<CreateItemRequest, Item>(
   HttpMethod.POST, "/item/app/{{app.app_id}}", GetTransformer()
 );
 
@@ -259,7 +266,7 @@ export const Update = CreateEndpoint<UpdateRequest, any>(
 );
 
 export const UpdateFieldValue = CreateEndpoint<UpdateFieldValueRequest, any>(
-  HttpMethod.PUT, "/item/{{item_id}}/value/{{file_or_external_id}}", GetTransformer()
+  HttpMethod.PUT, "/item/{{item_id}}/value/{{field_or_external_id}}", GetTransformer()
 );
 
 export const UpdateValues = CreateEndpoint<UpdateValuesRequest, any>(

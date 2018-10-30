@@ -1,3 +1,7 @@
+import _ from "lodash";
+import UrlJoin from "url-join";
+import qs from "query-string";
+import { EndPointConfig } from "podio-js";
 
 export type NoParamsRequest = {};
 
@@ -37,6 +41,16 @@ export interface HookValidationRequest {
 export interface HookResponse {
   hook_id: HookId;
   options: {[key: string]: any};
+}
+
+
+export function NoHook<Req, Res>(config: EndPointConfig<Req, Res>): EndPointConfig<Req, Res> {
+  let parsed = qs.parseUrl(config.uri);
+  let query = Object.assign({}, parsed.query, {hook: false});
+
+  return Object.assign({}, config, {
+    uri: UrlJoin(parsed.url, `?${qs.stringify(query)}`)
+  });
 }
 
 export type AppId = number;
@@ -173,7 +187,7 @@ export namespace Fields {
     referenced_apps: [
       {
         app_id: AppId;
-        view_id: ViewId;
+        view_id?: ViewId;
       }
     ];
     multiple?: boolean;
@@ -229,6 +243,10 @@ export namespace Fields {
     display_format?: "INT" | "NAT" | "E164" | "RFC3966";
     default_country_code?: string;
   }
+
+  export type RemoteFieldConfig = RemoteField & (TextFieldConfig | AppFieldConfig | MoneyFieldConfig | ContactFieldConfig |
+  CategoryFieldConfig | NumberFieldConfig | DateFieldConfig | CalculationFieldConfig | FileFieldConfig | DurationFieldConfig |
+  TelephoneFieldConfig);
 
 
   export interface EmbedFieldValue {
@@ -295,7 +313,7 @@ export namespace Fields {
 
   export interface TextFieldValue {
     value: string;
-    format: TextFormat;
+    format?: TextFormat;
   }
 
   export interface CategoryFieldValue {
@@ -310,6 +328,30 @@ export namespace Fields {
   export interface PhoneFieldValue {
     value: string;
     type : "mobile" | "work" | "home" | "main" | "work_fax" | "private_fax" | "other";
+  }
+
+  export type FieldValueType = EmbedFieldValue | DurationFieldValue | VideoFieldValue | LocationFieldValue | ProgressFieldValue | MoneyFieldValue |
+    ContactFieldValue | MemberFieldValue | AppFieldValue | DateFieldValue | ImageFieldValue | NumberFieldValue |
+    TextFieldValue | CategoryFieldValue | EmailFieldValue | PhoneFieldValue;
+  
+  export interface FieldLabel {
+    label: string;
+  }
+
+  export interface RemoteFieldWithValue extends FieldLabel, RemoteField {
+    type: Type;
+    values: FieldValueType[];
+  }
+
+  export interface Field extends FieldLabel, RemoteField {
+  }
+
+  export function Create<T extends FieldValueType>(field_id: FieldId, label: string, value: T): Field {
+    return Object.assign({ label, field_id }, value);
+  }
+
+  export function Postable(fields: Field[]) {
+    return _.groupBy(fields, "field_id");
   }
 
 }

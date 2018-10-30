@@ -98,13 +98,14 @@ function GetDataOption<Req, Res>(endPoint: EndPointConfig<Req, Res>): DataOption
     return DataOption.QueryString;
   }
 
-  if (endPoint.method === HttpMethod.POST) {
+  if (endPoint.method === HttpMethod.POST || endPoint.method === HttpMethod.PUT) {
     if (IsFormData(endPoint.obj)) {
       return DataOption.Form;
     }
     return DataOption.Json;
   }
 }
+
 
 export async function MakeRequest<Req, Res>(request: any, endPoint: EndPointConfig<Req, Res>): Promise<Res | FailedResponse> {
   let reqTransformer = endPoint.transformer.request || DefaultRequestTransformer;
