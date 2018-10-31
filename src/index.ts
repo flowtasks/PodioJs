@@ -86,7 +86,7 @@ export function CreateEndpoint<Req, Res>(method: HttpMethod, uri: URI, transform
 };
 
 export function IsErrorResponse<T>(response: T | FailedResponse): response is FailedResponse {
-  return (<FailedResponse> response).error !== undefined;
+  return response && (<FailedResponse> response).error !== undefined;
 }
 
 export interface FailedResponse {

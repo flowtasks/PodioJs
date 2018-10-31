@@ -178,12 +178,12 @@ export namespace Fields {
     Required = "required"
   }
 
-  export interface TextFieldConfig {
+  export interface TextFieldSettings {
     size: "small" | "large";
     format: TextFormat
   }
 
-  export interface AppFieldConfig {
+  export interface AppFieldSettings {
     referenced_apps: [
       {
         app_id: AppId;
@@ -193,14 +193,14 @@ export namespace Fields {
     multiple?: boolean;
   }
 
-  export interface MoneyFieldConfig {
+  export interface MoneyFieldSettings {
     allowed_currencies: string
   }
  
-  export interface ContactFieldConfig {
+  export interface ContactFieldSettings {
     type: "space_users" | "all_users" | "space_contacts" | "space_users_and_contacts"
   }
-  export interface CategoryFieldConfig {
+  export interface CategoryFieldSettings {
     options: [{
       id?: number;
       status?: Status;
@@ -210,18 +210,17 @@ export namespace Fields {
     multiple?: boolean;
   }
 
-  export interface NumberFieldConfig {
+  export interface NumberFieldSettings {
     decimals?: number;
   }
 
-  export interface DateFieldConfig {
+  export interface DateFieldSettings {
     calendar?: boolean;
     end?: OptionalToggle;
     color?: Color
   }
 
-
-  export interface CalculationFieldConfig {
+  export interface CalculationFieldSettings {
     script: string;
     unit?: string;
     decimals?: number;
@@ -230,24 +229,31 @@ export namespace Fields {
     color: Color;
   }
 
-  export interface FileFieldConfig {
+  export interface FileFieldSettings {
     allowed_mimetypes: string[];
   }
 
-  export interface DurationFieldConfig {
+  export interface DurationFieldSettings {
     fields: ["days" | "hours" | "minutes" | "seconds"];
   }
 
-  export interface TelephoneFieldConfig {
+  export interface TelephoneFieldSettings {
     strict?: boolean;
     display_format?: "INT" | "NAT" | "E164" | "RFC3966";
     default_country_code?: string;
   }
 
-  export type RemoteFieldConfig = RemoteField & (TextFieldConfig | AppFieldConfig | MoneyFieldConfig | ContactFieldConfig |
-  CategoryFieldConfig | NumberFieldConfig | DateFieldConfig | CalculationFieldConfig | FileFieldConfig | DurationFieldConfig |
-  TelephoneFieldConfig);
-
+  export interface RemoteFieldConfig extends RemoteField {
+    type: Type;
+    label: string;
+    status: Status;
+    config: {
+      label: string;
+      settings: TextFieldSettings | AppFieldSettings | MoneyFieldSettings | ContactFieldSettings |
+        CategoryFieldSettings | NumberFieldSettings | DateFieldSettings | CalculationFieldSettings | FileFieldSettings | DurationFieldSettings |
+        TelephoneFieldSettings;
+    }
+  }
 
   export interface EmbedFieldValue {
     embed: EmbedId;
@@ -355,7 +361,6 @@ export namespace Fields {
   }
 
 }
-
 
 export type SpaceUrl = string;
 
