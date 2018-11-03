@@ -1,8 +1,22 @@
 import { CreateEndpoint, HttpMethod, Postable } from "podio-js";
-import { PodioRef } from ".";
+import { PodioRef, ContactId, AccessLevel, PodioApiResponse } from ".";
 
-export interface CreateRequest extends Postable<any> {
+export enum GrantPrivilegeAction {
+  View = "view",
+  Comment = "comment",
+  Rate = "rate"
+}
+
+export interface GrantRequest {
+  people: ContactId[];
+  action: GrantPrivilegeAction;
+  message?: string;
+  access_level: AccessLevel;
+}
+
+export interface CreateGrantRequest extends Postable<GrantRequest> {
   ref: PodioRef
 }
 
-export const Create = CreateEndpoint<any, any>(HttpMethod.POST, "/grant/{{ref.type}}/{{ref.id}}")
+
+export const Create = CreateEndpoint<CreateGrantRequest, PodioApiResponse>(HttpMethod.POST, "/grant/{{ref.type}}/{{ref.id}}")

@@ -6,13 +6,24 @@ import { EndPointConfig } from "podio-js";
 export type NoParamsRequest = {};
 
 export enum PodioRefType {
+  User = "user",
+  Profile = "profile",
+  Mail = "mail",
+  External = "external",
   Item = "item",
   App = "app",
   Space = "space",
   LinkedAccount = "linked_account"
 }
 
+export enum AccessLevel {
+  Edit = "edit",
+  View = "view"
+}
+
 export type PodioRefId = number;
+
+export type PodioApiResponse = any;
 
 export interface PodioRef {
   type: PodioRefType;
@@ -72,6 +83,10 @@ export type CategoryId = number;
 export type StatusId = number;
 export type TaskId = number;
 export type LabelId = number;
+export interface ContactId {
+  type: PodioRefType;
+  id: string | number;
+}
 
 export interface RemoteUser {
   user_id: UserId;

@@ -106,7 +106,6 @@ function GetDataOption<Req, Res>(endPoint: EndPointConfig<Req, Res>): DataOption
   }
 }
 
-
 export async function MakeRequest<Req, Res>(request: any, endPoint: EndPointConfig<Req, Res>): Promise<Res | FailedResponse> {
   let reqTransformer = endPoint.transformer.request || DefaultRequestTransformer;
   let resTransformer = endPoint.transformer.response || DefaultResponseTransformer;
@@ -117,6 +116,7 @@ export async function MakeRequest<Req, Res>(request: any, endPoint: EndPointConf
     method: endPoint.method,
     uri: _.template(endPoint.uri)((endPoint.obj || {}) as Object),
     [dataOption]: reqTransformer(endPoint.obj),
+    headers: endPoint.headers || {},
   };
 
   try {
