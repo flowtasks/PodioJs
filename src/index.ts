@@ -34,6 +34,10 @@ export interface Postable<T> {
   data: T;
 }
 
+export interface Queryable<T> {
+  query: T;
+}
+
 export function CreateFormData<T>(obj: T): FormData<T> {
   return {
     form: obj
@@ -46,6 +50,10 @@ function IsPostable<T>(obj: Postable<T> | any): obj is Postable<T> {
 
 function IsFormData<T>(obj: FormData<T> | any): obj is FormData<T> {
   return obj !== undefined && (<FormData<T>> obj).form !== undefined;
+}
+
+function IsQueryable<T>(obj: Queryable<T> | any): obj is Queryable<T> {
+  return obj !== undefined && (<Queryable<T>> obj).query !== undefined;
 }
 
 export type RequestTransformer<RequestType> = (obj: RequestType) => any;
@@ -62,6 +70,9 @@ function DefaultRequestTransformer<T>(reqObj: T): any {
   }
   if (IsPostable(reqObj)) {
     return reqObj.data;
+  }
+  if (IsQueryable(reqObj)) {
+    return reqObj.query;
   }
   return reqObj;
 }

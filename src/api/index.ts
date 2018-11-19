@@ -1,7 +1,7 @@
 import _ from "lodash";
 import UrlJoin from "url-join";
 import qs from "query-string";
-import { EndPointConfig } from "podio-js";
+import { EndPointConfig, Postable } from "podio-js";
 
 export type NoParamsRequest = {};
 
@@ -44,9 +44,8 @@ export type HookRequest = Hook & {
   ref: PodioRef;
 }
 
-export interface HookValidationRequest {
+export interface HookValidationRequest extends Postable<{code: string}> {
   hook_id: HookId;
-  code: string;
 }
 
 export interface HookResponse {

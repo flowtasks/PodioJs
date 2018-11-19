@@ -18,12 +18,6 @@ let createResTransformer = (obj: any): HookResponse => {
   };
 }
 
-let validationReqTransformer = (obj: HookValidationRequest) => {
-  return {
-    code: obj.code
-  };
-};
-
 export const All = CreateEndpoint<HookRequest, Hook[]>(HttpMethod.GET, "/hook/{{ref.type}}/{{ref.id}}");
 export const Create = CreateEndpoint<HookRequest, HookResponse>(
   HttpMethod.POST, "/hook/{{ref.type}}/{{ref.id}}", {
@@ -31,6 +25,6 @@ export const Create = CreateEndpoint<HookRequest, HookResponse>(
     response: createResTransformer
   }
 );
-export const Validate = CreateEndpoint<HookValidationRequest, void>(HttpMethod.POST, "/hook/{{hook_id}}/verify/validate", {request: validationReqTransformer});
+export const Validate = CreateEndpoint<HookValidationRequest, void>(HttpMethod.POST, "/hook/{{hook_id}}/verify/validate");
 export const Delete = CreateEndpoint<RemoteHook, any>(HttpMethod.DELETE, "/hook/{{hook_id}}");
 export const RequestVerification = CreateEndpoint<RemoteHook, any>(HttpMethod.POST, "/hook/{{hook_id}}/verify/request");
